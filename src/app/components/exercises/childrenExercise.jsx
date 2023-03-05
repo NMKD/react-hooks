@@ -2,8 +2,7 @@ import React from "react";
 import CollapseWrapper from "../common/collapse";
 
 const ListComponent = ({ children }) => {
-    const data = React.Children.toArray(children);
-    return React.Children.map(data, (child) => {
+    return React.Children.map(React.Children.toArray(children), (child) => {
         const str = child.key;
         const num = Number(str.replace(".", "")) + 1;
         return (
