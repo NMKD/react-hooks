@@ -1,8 +1,10 @@
 import React from "react";
 import CollapseWrapper from "../common/collapse";
-import { ComponentWithHoc } from "./ComponentWithHoc";
+import withFunctions from "./withFunctions";
+import SimpleComponent from "./SimpleComponent";
 
 const HocExercise = () => {
+    const ComponentWithHoc = withFunctions(SimpleComponent);
     return (
         <CollapseWrapper title="Упражнение">
             <p className="mt-3">

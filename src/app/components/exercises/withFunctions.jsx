@@ -6,11 +6,9 @@ const withFunctions = (Component) => (props) => {
     const isLogin = localStorage.getItem("auth");
 
     const onLogin = () => {
-        console.log("onLogin ", isLogin);
         isLogin === null ? localStorage.setItem("auth", "token") : null;
     };
     const onLogOut = () => {
-        console.log("onLogOut ", isLogin);
         isLogin ? localStorage.removeItem("auth") : null;
     };
     return (

@@ -4,20 +4,12 @@ import PropTypes from "prop-types";
 const SimpleComponent = ({ onLogin, onLogOut, isAuth }) => {
     console.log("SimpleComponent isAuth: ", isAuth);
     return (
-        <>
-            {!isAuth ? (
-                <button className="btn btn-success mt-3 mx-2" onClick={onLogin}>
-                    Sign in
-                </button>
-            ) : (
-                <button
-                    className="btn btn-primary mt-3 mx-2"
-                    onClick={onLogOut}
-                >
-                    Sign out
-                </button>
-            )}
-        </>
+        <button
+            className={"btn mt-3 mx-2 btn-" + (!isAuth ? "success" : "primary")}
+            onClick={!isAuth ? onLogin : onLogOut}
+        >
+            {!isAuth ? "Sign in" : "Sign out"}
+        </button>
     );
 };
 
