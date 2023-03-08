@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { validator } from "../../../utils/validator";
 import PropTypes from "prop-types";
 const FromComponent = ({
@@ -10,12 +10,21 @@ const FromComponent = ({
     const [data, setData] = useState(defaultData || {});
     const [errors, setErrors] = useState({});
 
-    const handleChange = (target) => {
+    const handleChange = useCallback((target) => {
         setData((prevState) => ({
             ...prevState,
             [target.name]: target.value
         }));
-    };
+    }, []);
+
+    const handleKeyDown = useCallback((e) => {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            const form = e.target.form;
+            const indexField = Array.prototype.indexOf.call(form, e.target);
+            form.elements[indexField + 1].focus();
+        }
+    }, []);
 
     const validate = () => {
         if (data === null || Object.keys(data).length === 0) return;
@@ -38,12 +47,19 @@ const FromComponent = ({
     const clonedElements = React.Children.map(children, (child) => {
         const typeChild = typeof child.type;
         let config = {};
-        if (typeChild === "function") {
+        if (typeChild === "function" || typeChild === "object") {
+            if (!child.props.name) {
+                throw new Error(
+                    "Property is required for field of components",
+                    { child }
+                );
+            }
             config = {
                 ...child.props,
                 onChange: handleChange,
                 value: data[child.props.name] || "",
-                error: errors[child.props.name] || ""
+                error: errors[child.props.name] || "",
+                onKeyDown: handleKeyDown
             };
         }
         if (typeChild === "string") {
